@@ -15,16 +15,28 @@ func TestCleanInput(t *testing.T) {
 			input:    "Charmander Bulbasaur PIKACHU",
 			expected: []string{"charmander", "bulbasaur", "pikachu"},
 		},
+		{
+			input:    "",
+			expected: []string{"input string cannot be empty"},
+		},
 	}
 
 	for _, c := range cases {
-		actual := cleanInput(c.input)
+		actual, err := cleanInput(c.input)
+		if err != nil {
+			actual := err.Error()
+			expectedError := c.expected[0]
+
+			if actual != expectedError {
+				t.Errorf("unexpected error mismatch:\n%s -> %s", actual, expectedError)
+			}
+		}
 		for i := range actual {
 			word := actual[i]
 			expectedWord := c.expected[i]
 
 			if word != expectedWord {
-				t.Errorf("expected and actual do not match: %s -> %s", word, expectedWord)
+				t.Errorf("expected and actual do not match:\n%s -> %s", word, expectedWord)
 			}
 		}
 	}
