@@ -20,10 +20,10 @@ func cleanInput(text string) ([]string, error) {
 }
 
 func main() {
-	prompt()
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
+		prompt()
 		scanner.Scan()
 		err := scanner.Err()
 		if err != nil {
@@ -32,13 +32,17 @@ func main() {
 
 		input, err := cleanInput(scanner.Text())
 		if err != nil {
-			fmt.Print(err)
-			prompt()
+			fmt.Println(err)
 			continue
 		}
 
-		s := fmt.Sprintf("Your command was: %s", input[0])
-		fmt.Println(s)
-		prompt()
+		command, ok := allCommands[input[0]]
+		if !ok {
+			fmt.Println("Unknown command")
+			continue
+		}
+
+		command.callback()
+		continue
 	}
 }
