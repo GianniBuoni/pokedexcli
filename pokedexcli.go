@@ -9,11 +9,6 @@ import (
 
 	. "github.com/GianniBuoni/pokedexcli/internal/api"
 	. "github.com/GianniBuoni/pokedexcli/internal/lib"
-	. "github.com/GianniBuoni/pokedexcli/internal/pokecache"
-)
-
-const (
-	mapArea Endpoint = "https://pokeapi.co/api/v2/location-area?limit=20"
 )
 
 func prompt() {
@@ -21,9 +16,9 @@ func prompt() {
 }
 
 func main() {
-  NewCache(time.Second * 5)
-	var endpoints Config
-  endpoints.Next = mapArea
+	config := &Config{
+		Client: NewClient(1 * time.Minute),
+	}
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -46,7 +41,7 @@ func main() {
 			continue
 		}
 
-		command.Callback(&endpoints)
+		command.Callback(config)
 		continue
 	}
 }

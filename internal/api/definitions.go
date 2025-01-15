@@ -1,6 +1,12 @@
 package api
 
-type Endpoint = string
+import (
+	cache "github.com/GianniBuoni/pokedexcli/internal/pokecache"
+)
+
+type Client struct {
+	cache *cache.Cache
+}
 
 type CliCommand struct {
 	Name        string
@@ -9,8 +15,9 @@ type CliCommand struct {
 }
 
 type Config struct {
-	Next     Endpoint
-	Previous Endpoint
+	Next     *string
+	Previous *string
+	Client   Client
 }
 
 type PokeResponse struct {
