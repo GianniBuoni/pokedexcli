@@ -36,7 +36,7 @@ func main() {
 			continue
 		}
 
-		command, ok := allCommands[input[0]]
+		command, ok := getCommands()[input[0]]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
