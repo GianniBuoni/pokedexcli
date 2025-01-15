@@ -21,7 +21,7 @@ func prompt() {
 }
 
 func main() {
-  NewCahe(time.Second * 5)
+  NewCache(time.Second * 5)
 	var endpoints Config
   endpoints.Next = mapArea
 	scanner := bufio.NewScanner(os.Stdin)

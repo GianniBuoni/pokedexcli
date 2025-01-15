@@ -7,8 +7,8 @@ import (
 )
 
 type Cache struct {
-	entries map[string]cacheEntry
 	mu      sync.Mutex
+	entries map[string]cacheEntry
 }
 
 type cacheEntry struct {
@@ -45,7 +45,14 @@ func (c *Cache) reapLoop(interval time.Duration) {
 
 	go func() {
 		for range ticker.C {
-			fmt.Println("ticker running")
+			for k, v := range c.entries {
+				if time.Since(v.createdAt) > interval {
+					c.mu.Lock()
+					fmt.Println("cache entry cleared")
+					delete(c.entries, k)
+					c.mu.Unlock()
+				}
+			}
 		}
 	}()
 
