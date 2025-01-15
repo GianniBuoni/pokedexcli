@@ -1,6 +1,10 @@
-package main
+package test
 
-import "testing"
+import (
+  "testing"
+
+  lib "github.com/GianniBuoni/pokedexcli/internal/lib"
+)
 
 func TestCleanInput(t *testing.T) {
 	cases := []struct {
@@ -22,7 +26,7 @@ func TestCleanInput(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual, err := cleanInput(c.input)
+		actual, err := lib.CleanInput(c.input)
 		if err != nil {
 			actual := err.Error()
 			expectedError := c.expected[0]

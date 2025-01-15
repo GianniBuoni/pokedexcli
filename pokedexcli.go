@@ -5,21 +5,22 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
+
+	. "github.com/GianniBuoni/pokedexcli/internal/lib"
+	. "github.com/GianniBuoni/pokedexcli/internal/api"
+)
+
+const (
+	mapArea Endpoint = "https://pokeapi.co/api/v2/location?limit=20"
 )
 
 func prompt() {
 	fmt.Print("Pokedex > ")
 }
 
-func cleanInput(text string) ([]string, error) {
-	if text == "" {
-		return nil, fmt.Errorf("input string cannot be empty")
-	}
-	return strings.Fields(strings.ToLower(strings.TrimSpace(text))), nil
-}
-
 func main() {
+	var endpoints Config
+  endpoints.Next = mapArea
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -30,19 +31,19 @@ func main() {
 			log.Fatalf("There was trouble reading input: %v", err)
 		}
 
-		input, err := cleanInput(scanner.Text())
+		input, err := CleanInput(scanner.Text())
 		if err != nil {
 			fmt.Println(err)
 			continue
 		}
 
-		command, ok := getCommands()[input[0]]
+		command, ok := GetCommands()[input[0]]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
 		}
 
-		command.callback()
+		command.Callback(&endpoints)
 		continue
 	}
 }
