@@ -7,28 +7,49 @@ import (
 )
 
 func CommandMap(c *Config) error {
-	data, err := mapRequest(c)
+	if c.Next == "" {
+		fmt.Println("you're on the last page")
+		fmt.Println()
+		return nil
+	}
+
+	data, err := mapRequest(c.Next, c)
 	if err != nil {
 		return err
 	}
 
-	if c.Next == "" {
-		fmt.Println("you're on the last page")
-		return nil
-	}
-
-	// for each item in results: print the Name
 	for _, v := range data.Results {
 		fmt.Println(v.Name)
 	}
+	fmt.Println()
 	return nil
 }
 
-func mapRequest(c *Config) (PokeResponse, error) {
+func CommandMapb(c *Config) error {
+	if c.Previous == "" {
+		fmt.Println("you're on the first page")
+		fmt.Println()
+		return nil
+
+	}
+
+	data, err := mapRequest(c.Previous, c)
+	if err != nil {
+		return err
+	}
+
+	for _, v := range data.Results {
+		fmt.Println(v.Name)
+	}
+	fmt.Println()
+	return nil
+}
+
+func mapRequest(url string, c *Config) (PokeResponse, error) {
 	var data PokeResponse
 
 	// make GET request
-	res, err := http.Get(c.Next)
+	res, err := http.Get(url)
 	if err != nil {
 		return data, fmt.Errorf("issue with GET request: %w", err)
 	}
