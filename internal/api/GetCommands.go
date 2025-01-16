@@ -37,5 +37,10 @@ func GetCommands() map[string]CliCommand {
 			Description: "Show info of pokemon registered in Pokedex. Syntax: inspect $POKEMON_NAME",
 			Callback:    commandInspect,
 		},
+		"pokedex": {
+			Name:        "pokedex",
+			Description: "Displays all pokemon registered to the Pokedex",
+			Callback:    commandPokedex,
+		},
 	}
 }

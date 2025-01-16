@@ -24,3 +24,12 @@ func commandHelp(c *Config, i string) error {
 	fmt.Println()
 	return nil
 }
+
+func commandPokedex(c *Config, i string) error {
+  fmt.Println("Your Pokedex:")
+  for _, v := range c.Pokedex {
+    fmt.Printf("  - %s\n", v.Name)
+  }
+	fmt.Println()
+  return nil
+}
