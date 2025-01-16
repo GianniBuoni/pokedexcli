@@ -35,9 +35,17 @@ type PokeLocations struct {
 }
 
 type Pokemon struct {
-	Id      int    `mapstructure:"id"`
-	BaseExp int    `mapstructure:"base_experience"`
 	Name    string `mapstructure:"name"`
+	BaseExp int    `mapstructure:"base_experience"`
+	Height  int    `mapstructure:"height"`
+	Weight  int    `mapstructure:"weight"`
+	Stats   []struct {
+		BaseStat int     `mapstructure:"base_stat"`
+		Stat     Results `mapstructure:"stat"`
+	} `mapstructure:"stats"`
+	Types []struct {
+		Type Results `mapstructure:"type"`
+	} `mapstructure:"types"`
 }
 
 type Results struct {
