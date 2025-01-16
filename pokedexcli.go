@@ -32,16 +32,27 @@ func main() {
 		input, err := CleanInput(scanner.Text())
 		if err != nil {
 			fmt.Println(err)
+			fmt.Println()
 			continue
 		}
 
 		command, ok := GetCommands()[input[0]]
 		if !ok {
 			fmt.Println("Unknown command")
+			fmt.Println()
 			continue
 		}
 
-		command.Callback(config)
+		params := ""
+		if len(input) > 1 {
+			params = input[1]
+		}
+
+		err = command.Callback(config, params)
+		if err != nil {
+			fmt.Println(err)
+			fmt.Println()
+		}
 		continue
 	}
 }

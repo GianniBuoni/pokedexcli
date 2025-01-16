@@ -8,6 +8,7 @@ import (
 	"time"
 
 	. "github.com/GianniBuoni/pokedexcli/internal/pokecache"
+	"github.com/mitchellh/mapstructure"
 )
 
 const (
@@ -20,7 +21,7 @@ func NewClient(cacheInterval time.Duration) Client {
 	}
 }
 
-func (c *Client) getLocation(path *string) (PokeResponse, error) {
+func (c *Client) getLocation(path *string) (LocationResponse, error) {
 	fullpath := baseUrl + "location-area?limit=20"
 	if path != nil {
 		fullpath = *path
@@ -28,18 +29,25 @@ func (c *Client) getLocation(path *string) (PokeResponse, error) {
 
 	data, err := c.request(fullpath)
 	if err != nil {
-		return PokeResponse{}, err
+		return LocationResponse{}, err
 	}
-	return data, nil
+
+	mapData := LocationResponse{}
+	err = mapstructure.Decode(data, &mapData)
+	if err != nil {
+		return LocationResponse{}, fmt.Errorf("issue decoding map structure: %w", err)
+	}
+
+	return mapData, nil
 }
 
-func (c *Client) request(url string) (PokeResponse, error) {
+func (c *Client) request(url string) (T map[string]any, err error) {
 	// check cache
 	if val, ok := c.cache.Get(url); ok {
-		data := PokeResponse{}
+		data := T
 		err := json.Unmarshal(val, &data)
 		if err != nil {
-			return PokeResponse{}, fmt.Errorf("issue reading cache: %w", err)
+			return nil, fmt.Errorf("issue reading cache: %w", err)
 		}
 		return data, nil
 	}
@@ -47,21 +55,21 @@ func (c *Client) request(url string) (PokeResponse, error) {
 	// make GET request
 	res, err := http.Get(url)
 	if err != nil {
-		return PokeResponse{}, fmt.Errorf("issue with GET request: %w", err)
+		return nil, fmt.Errorf("issue with GET request: %w", err)
 	}
 
 	defer res.Body.Close()
 	if res.StatusCode > 299 {
-		return PokeResponse{}, fmt.Errorf(
+		return nil, fmt.Errorf(
 			"issue reading response\nstatus code: %d\nbody: %v",
 			res.StatusCode, res.Body)
 	}
 
-	data := PokeResponse{}
+	data := T
 	bytes, err := io.ReadAll(res.Body)
 	err = json.Unmarshal(bytes, &data)
 	if err != nil {
-		return PokeResponse{}, err
+		return nil, err
 	}
 
 	c.cache.Add(url, bytes)
