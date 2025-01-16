@@ -2,13 +2,13 @@ package api
 
 import (
 	"fmt"
+
+	"github.com/mitchellh/mapstructure"
 )
 
-func CommandMap(c *Config) error {
+func CommandMap(c *Config, i string) error {
 	if c.Next != nil && *c.Next == "" {
-		fmt.Println("you're on the last page")
-		fmt.Println()
-		return nil
+		return fmt.Errorf("you're on the last page")
 	}
 
 	data, err := c.Client.getLocation(c.Next)
@@ -26,11 +26,9 @@ func CommandMap(c *Config) error {
 	return nil
 }
 
-func CommandMapb(c *Config) error {
+func CommandMapb(c *Config, i string) error {
 	if c.Previous == nil || *c.Previous == "" {
-		fmt.Println("you're on the first page")
-		fmt.Println()
-		return nil
+		return fmt.Errorf("you're on the first page")
 	}
 
 	data, err := c.Client.getLocation(c.Previous)
@@ -46,4 +44,24 @@ func CommandMapb(c *Config) error {
 	}
 	fmt.Println()
 	return nil
+}
+
+func (c *Client) getLocation(path *string) (LocationResponse, error) {
+	fullpath := baseUrl + "location-area?limit=20"
+	if path != nil {
+		fullpath = *path
+	}
+
+	data, err := c.request(fullpath)
+	if err != nil {
+		return LocationResponse{}, err
+	}
+
+	mapData := LocationResponse{}
+	err = mapstructure.Decode(data, &mapData)
+	if err != nil {
+		return LocationResponse{}, fmt.Errorf("issue decoding map to structure: %w", err)
+	}
+
+	return mapData, nil
 }

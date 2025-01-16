@@ -11,7 +11,7 @@ type Client struct {
 type CliCommand struct {
 	Name        string
 	Description string
-	Callback    func(c *Config) error
+	Callback    func(c *Config, i string) error
 }
 
 type Config struct {
@@ -20,11 +20,17 @@ type Config struct {
 	Client   Client
 }
 
-type PokeResponse struct {
+type LocationResponse struct {
 	Count    int
 	Next     string
 	Previous string
 	Results  []Results
+}
+
+type PokeLocations struct {
+	PokemonEncounters []struct {
+		Pokemon Results `mapstructure:"pokemon"`
+	} `mapstructure:"pokemon_encounters"`
 }
 
 type Results struct {

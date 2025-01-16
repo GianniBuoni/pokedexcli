@@ -5,13 +5,13 @@ import (
 	"os"
 )
 
-func CommandExit(*Config) error {
+func CommandExit(c *Config, i string) error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
 	return nil
 }
 
-func CommandHelp(*Config) error {
+func CommandHelp(c *Config, i string) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
