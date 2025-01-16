@@ -6,7 +6,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-func CommandMap(c *Config, i string) error {
+func commandMap(c *Config, i string) error {
 	if c.Next != nil && *c.Next == "" {
 		return fmt.Errorf("you're on the last page")
 	}
@@ -26,7 +26,7 @@ func CommandMap(c *Config, i string) error {
 	return nil
 }
 
-func CommandMapb(c *Config, i string) error {
+func commandMapb(c *Config, i string) error {
 	if c.Previous == nil || *c.Previous == "" {
 		return fmt.Errorf("you're on the first page")
 	}

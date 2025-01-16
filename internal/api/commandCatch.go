@@ -7,7 +7,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-func catch(c *Config, i string) error {
+func commandCatch(c *Config, i string) error {
 	if i == "" {
 		return fmt.Errorf("pokemon param cannot be empty")
 	}

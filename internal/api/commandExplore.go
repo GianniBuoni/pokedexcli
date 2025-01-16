@@ -6,7 +6,7 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-func explore(c *Config, i string) error {
+func commandExplore(c *Config, i string) error {
 	if i == "" {
 		return fmt.Errorf("area param cannot be empty")
 	}

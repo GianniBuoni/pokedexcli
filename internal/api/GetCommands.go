@@ -5,32 +5,32 @@ func GetCommands() map[string]CliCommand {
 		"exit": {
 			Name:        "exit",
 			Description: "Exit the Pokedex",
-			Callback:    CommandExit,
+			Callback:    commandExit,
 		},
 		"help": {
 			Name:        "help",
 			Description: "Displays a help message",
-			Callback:    CommandHelp,
+			Callback:    commandHelp,
 		},
 		"map": {
 			Name:        "map",
 			Description: "Displays the next 20 area locations in the Pokemon world",
-			Callback:    CommandMap,
+			Callback:    commandMap,
 		},
 		"mapb": {
 			Name:        "mapb",
 			Description: "Displays the last 20 area locations in the Pokemon world",
-			Callback:    CommandMapb,
+			Callback:    commandMapb,
 		},
 		"explore": {
 			Name:        "explore",
 			Description: "Displays list of Pokemon in map area. Syntax: explore $AREA_NAME",
-			Callback:    explore,
+			Callback:    commandExplore,
 		},
 		"catch": {
 			Name:        "catch",
 			Description: "Attempt to catch a Pokemon. Syntax: catch $POKEMON_NAME",
-			Callback:    catch,
+			Callback:    commandCatch,
 		},
 		"inspect": {
 			Name:        "inspect",
