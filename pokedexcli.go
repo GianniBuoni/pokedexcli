@@ -17,7 +17,8 @@ func prompt() {
 
 func main() {
 	config := &Config{
-		Client: NewClient(1 * time.Minute),
+		Client:  NewClient(1 * time.Minute),
+		Pokedex: map[string]Pokemon{},
 	}
 	scanner := bufio.NewScanner(os.Stdin)
 

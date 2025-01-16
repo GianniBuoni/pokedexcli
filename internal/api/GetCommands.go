@@ -27,5 +27,10 @@ func GetCommands() map[string]CliCommand {
 			Description: "Displays list of Pokemon in map area. Syntax: explore $AREA_NAME",
 			Callback:    explore,
 		},
+		"catch": {
+			Name:        "catch",
+			Description: "Attempt to catch a Pokemon. Syntax: catch $POKEMON_NAME",
+			Callback:    catch,
+		},
 	}
 }
